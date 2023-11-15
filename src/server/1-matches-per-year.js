@@ -22,9 +22,7 @@ function numberOfMatches(json){
 
         obj[json[i].season]++;
    }
-
-   // console.log(obj)
-
       fs.writeFileSync('public/output/matchesPerYear.json',JSON.stringify(obj));
+
 }
 
