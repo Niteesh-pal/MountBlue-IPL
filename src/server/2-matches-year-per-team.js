@@ -1,26 +1,18 @@
-const csvtoJson = require('csvtojson');
-const fs = require('fs');
+function matchesYearPerTeam(matchData) {
+  const matchesPerYearData = matchData.reduce((acc, cur) => {
+    if (!acc[cur['season']]) {
+      acc[cur['season']] = {};
+    }
+    if (!acc[cur['season']][cur['winner']]) {
+      acc[cur['season']][cur['winner']] = 0;
+    }
 
-csvtoJson()
-.fromFile('data/matches.csv')
-.then((json)=>{
-    
-    matchesWonByTeam(json);
-})
+    acc[cur['season']][cur['winner']]++;
 
-function matchesWonByTeam(json){
-    let object = {};
-    json.map((obj)=>{
-        
-        if(!object[obj.winner]){
-            object[obj.winner] = {}
-        }
+    return acc;
+  }, {});
 
-        if(!object[obj.winner][obj.season]){
-            object[obj.winner][obj.season] = 0;
-        }
-
-        object[obj.winner][obj.season]++;
-    })
-        fs.writeFileSync('public/output/matchesPerTeamPerYear.json',JSON.stringify(object))
+  return matchesPerYearData;
 }
+
+module.exports.matchesYearPerTeam = matchesYearPerTeam;

@@ -1,40 +1,28 @@
-const csvtojson = require('csvtojson');
-const fs = require('fs');
-
-csvtojson()
-.fromFile('data/matches.csv')
-.then((json)=>{
-    const matchId = [];
-
-    for(let obj of json){
-        if(obj.season === '2016'){
-             matchId.push(obj.id);
-          }
+function getExtraRunsPerTeam2016(matchData, deliveryData) {
+  const matchId = matchData.reduce((acc, cur) => {
+    if (cur['season'] === '2016') {
+      if (!acc.hasOwnProperty(cur['id'])) {
+        acc[cur['id']] = cur['id'];
+      }
     }
 
+    return acc;
+  }, {});
+  // console.log(matchId);
 
-    const extraRun ={};
+  const extraRunsPerTeamData = deliveryData.reduce((acc, curr) => {
+    if (matchId[curr['match_id']] === curr['match_id']) {
+      if (acc.hasOwnProperty(curr['bowling_team'])) {
+        acc[curr['bowling_team']] += Number(curr['extra_runs']);
+      } else {
+        acc[curr['bowling_team']] = 0;
+      }
+    }
 
+    return acc;
+  }, {});
 
-    csvtojson()
-    .fromFile('data/deliveries.csv')
-    .then((json)=>{
+  return extraRunsPerTeamData;
+}
 
-        json.map((obj)=>{
-            if(matchId.includes(obj.match_id)){
-                if(!extraRun[obj.bowling_team]){
-                    extraRun[obj.bowling_team]=0;
-                }
-
-                extraRun[obj.bowling_team] = Number(extraRun[obj.bowling_team]) + Number( obj.extra_runs);
-               
-            }  
-        })
-        
-        fs.writeFileSync('public/output/extraRuns.json',JSON.stringify(extraRun,null,2));
-
-    
-    })
-
-    
-})
+module.exports.getExtraRunsPerTeam2016 = getExtraRunsPerTeam2016;
