@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-prototype-builtins
+
 function strikeRate(matchData, deliveryData, player) {
   const id = matchData.reduce((acc, match) => {
     if (!acc.hasOwnProperty(match.id)) {

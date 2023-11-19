@@ -48,12 +48,14 @@ function mainFunction() {
   );
 
   const getMatchesPerYear = numberOfMatches(matches);
+
   fs.writeFileSync(
     'src/public/output/numberOfMatchesPerYear.json',
     JSON.stringify(getMatchesPerYear)
   );
 
   const getMatchesPerYearPerTeam = matchesYearPerTeam(matches);
+
   fs.writeFileSync(
     'src/public/output/numberOfMatchesPerYearPerTeam.json',
     JSON.stringify(getMatchesPerYearPerTeam)
