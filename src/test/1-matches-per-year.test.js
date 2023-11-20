@@ -4,28 +4,34 @@ const {
 } = require('/home/niteesh/mountBlue/javascript/ipl/src/server/1-matches-per-year.js');
 
 const sampleData1 = [
-  { season: '2008', player: 'virat' },
-  { season: '2009', player: 'JJ Bumrah' },
-  { season: '2008', player: 'ABC' },
+  { season: '2008', team: 'ABC' },
+  { season: '2009', team: 'XYZ' },
+  { season: '2008', team: 'ABC' },
 ];
 const sampleData2 = [
-  { season: '2017', player: 'XYZ' },
-  { season: '2017', player: 'KL Rahul' },
-  { season: '2017', player: 'Irfan' },
+  { season: '2017', team: 'XYZ' },
+  { season: '2017', team: 'PQR' },
+  { season: '2017', team: 'Irfan' },
 ];
 
-test('Getting matches per year', () => {
+test('When No data is passed', () => {
   expect(numberOfMatches([])).toEqual({});
 });
 
-test('Getting matches per year', () => {
+test('When One match is played', () => {
+  expect(numberOfMatches([{ season: 2009, team: 'QWERT' }])).toEqual({
+    2009: 1,
+  });
+});
+
+test('When Multiple matches are played in different year', () => {
   expect(numberOfMatches(sampleData1)).toEqual({
     2008: 2,
     2009: 1,
   });
 });
 
-test('Getting matches per year', () => {
+test('When multiple matches are played in a year', () => {
   expect(numberOfMatches(sampleData2)).toEqual({
     2017: 3,
   });

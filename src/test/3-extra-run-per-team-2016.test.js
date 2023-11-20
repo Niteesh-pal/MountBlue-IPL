@@ -75,8 +75,64 @@ const sampleData2 = [
   },
 ];
 
+//test cases :-----
+
 test('When no data is passed', () => {
   expect(getExtraRunsPerTeam2016([], [])).toEqual({});
+});
+
+test('When a match is not in 2016 ', () => {
+  expect(
+    getExtraRunsPerTeam2016(
+      [{ id: '1', season: '2017' }],
+      [
+        {
+          match_id: '1',
+          batting_team: 'XYZ',
+          bowling_team: 'PQR',
+          extra_runs: '1',
+        },
+      ]
+    )
+  ).toEqual({});
+});
+
+test('In 2016 a team plays with different team ', () => {
+  expect(
+    getExtraRunsPerTeam2016(
+      [
+        { id: '1', season: '2016' },
+        { id: '2', season: '2016' },
+        { id: '3', season: '2016' },
+      ],
+      [
+        {
+          match_id: '1',
+          batting_team: 'XYZ',
+          bowling_team: 'PQR',
+          extra_runs: '1',
+        },
+        {
+          match_id: '1',
+          batting_team: 'QWERT',
+          bowling_team: 'PQR',
+          extra_runs: '2',
+        },
+        {
+          match_id: '2',
+          batting_team: 'XYZ',
+          bowling_team: 'PQR',
+          extra_runs: '1',
+        },
+        {
+          match_id: '3',
+          batting_team: 'XYZ',
+          bowling_team: 'PQR',
+          extra_runs: '1',
+        },
+      ]
+    )
+  ).toEqual({ PQR: 5 });
 });
 
 test('when one player plays game', () => {
